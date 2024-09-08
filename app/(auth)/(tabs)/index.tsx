@@ -1,45 +1,50 @@
-import { Button, StyleSheet } from "react-native";
+import React, { useEffect, useState } from 'react';
+import { RefreshControl, ScrollView } from 'react-native';
+import SearchBar from '@/components/SearchBar';
+import BannerCarousel from '@/components/BannerCarousel';
+import CategoryList from '@/components/CategoryList';
+import ProductList from '@/components/ProductList';
+import { ThemedView } from '@/components/ThemedView';
+import { productData, ProductType } from '@/lib/data';
 
-import EditScreenInfo from "@/components/EditScreenInfo";
-import { Text, View } from "@/components/Themed";
-import { useSession } from "../../ctx";
+export default function Home()
+{
 
-export default function TabOneScreen() {
-  const { signOut, session } = useSession();
+  const [products, setProducts] = useState<ProductType[]>(productData);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() =>
+  {
+    setRefreshing(true);
+    setTimeout(() =>
+    {
+      setProducts(productData);
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
+  useEffect(() => { setProducts(productData); }, []);
+
+  const filteredData = products.filter((item: any) =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.restaurant.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <Text>Welcome, {session}</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <EditScreenInfo path="app/(auth)/(tabs)/index.tsx" />
-      <Button
-        title="Sign Out"
-        onPress={() => {
-          // The `app/(app)/_layout.tsx` will redirect to the sign-in screen.
-          signOut();
-        }}
-      />
-    </View>
+    <ThemedView style={{ flex: 1 }}>
+      {/*<Header />*/}
+      <SearchBar placeholder={"Buscar..."} value={searchQuery} onChangeText={setSearchQuery} />
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
+        <BannerCarousel />
+        <CategoryList handler={setSearchQuery}/>
+        <ProductList products={filteredData} />
+      </ScrollView>
+    </ThemedView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
-});

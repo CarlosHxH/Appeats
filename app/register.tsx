@@ -25,13 +25,14 @@ export default function Login()
         Usando o roteador Expo, focado no aspecto da navegação.
       </ThemedText>
       <ThemedText style={styles.separator} />
-      <TextInput onChangeText={setEmail} placeholder="Username(not required)" style={styles.input} keyboardType="email-address" />
-      <TextInput onChangeText={setPassword} placeholder="Password(not required)" secureTextEntry style={styles.input} />
+      <TextInput onChangeText={setEmail} placeholder="Email" style={styles.input} keyboardType="email-address"/>
+      <TextInput onChangeText={setPassword} placeholder="Senha" secureTextEntry style={styles.input} />
+      <TextInput onChangeText={setPassword} placeholder="Confirme a senha" secureTextEntry style={styles.input} />
       <Button title="Login" onPress={handleLogin} />
-      <ThemedView style={{flexDirection:'row'}}>
-        <ThemedText>Não possui conta? </ThemedText>
+      <ThemedView style={{flexDirection:"row"}}>
+        <ThemedText>Já possui conta? </ThemedText>
         <ThemedText type="link">
-          <Link href={'/register'}>Click aqui</Link>
+          <Link href={'/login'}>Click aqui</Link>
         </ThemedText>
       </ThemedView>
     </ThemedView>

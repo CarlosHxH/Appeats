@@ -1,58 +1,77 @@
 import React from "react";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs } from "expo-router";
 import { Pressable } from "react-native";
-
-import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
+import Colors from "@/constants/Colors";
+import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>["name"];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
 
-export default function TabLayout() {
+export default function TabLayout()
+{
   const colorScheme = useColorScheme();
-
+  
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
+        // Desative a renderização estática do cabeçalho na web
+        // Para evitar um erro de hidratação na navegação react v6.
         headerShown: useClientOnlyValue(false, true),
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: "Tab One",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
+          title: "",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          ),
+          headerLeft: () => (
+            <Link href="/address" asChild>
               <Pressable>
                 {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? "light"].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
+                  <TabBarIcon name={pressed?'location':'location-outline'}  style={{padding:10}}/>
+                )}
+              </Pressable>
+            </Link>
+          ),
+          headerRight: () => (
+            <Link href="/cart" asChild>
+              <Pressable>
+                {({ pressed }) => (
+                  <TabBarIcon name={pressed ? 'cart' : 'cart-outline'} style={{padding:10}} />
                 )}
               </Pressable>
             </Link>
           ),
         }}
       />
+
       <Tabs.Screen
-        name="two"
+        name="explore"
         options={{
-          title: "Tab Two",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarLabel: '',
+          headerShown:false,
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'search' : 'search-outline'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="orders"
+        options={{
+          tabBarLabel: '',
+          headerShown:false,
+          tabBarIcon: ({ color, focused }) => (<TabBarIcon name={focused ? 'list' : 'list-outline'} color={color} />),
+        }}
+      />
+      <Tabs.Screen
+        name="user"
+        options={{
+          tabBarLabel: '',
+          headerShown:false,
+          tabBarIcon: ({ color, focused }) => (<TabBarIcon name={focused ? 'person' : 'person-outline'} color={color} />),
         }}
       />
     </Tabs>

@@ -2,12 +2,14 @@ import React from "react";
 import { useStorageState } from "./useStorageState";
 
 const AuthContext = React.createContext<{
-  signIn: () => void;
+  signIn: (email:string,password:string) => void;
+  signUp: (email:string,password:string) => void;
   signOut: () => void;
   session?: string | null;
   isLoading: boolean;
 }>({
   signIn: () => null,
+  signUp: () => null,
   signOut: () => null,
   session: null,
   isLoading: false,
@@ -18,7 +20,7 @@ export function useSession() {
   const value = React.useContext(AuthContext);
   if (process.env.NODE_ENV !== "production") {
     if (!value) {
-      throw new Error("useSession must be wrapped in a <SessionProvider />");
+      throw new Error("useSession deve ser envolto em um <SessionProvider />");
     }
   }
 
@@ -30,11 +32,13 @@ export function SessionProvider(props: React.PropsWithChildren) {
   return (
     <AuthContext.Provider
       value={{
-        signIn: () => {
-          // Add your login logic here
-          // For example purposes, we'll just set a fake session in storage
-          //This likely would be a JWT token or other session data
-          setSession("John Doe");
+        signIn: (email,password) => {
+          console.log(email, password);
+          
+          if(password) setSession(email);
+        },
+        signUp: (email,passowrd) => {
+          if(passowrd) setSession(email);
         },
         signOut: () => {
           setSession(null);
