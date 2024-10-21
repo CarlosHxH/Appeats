@@ -1,16 +1,10 @@
-## Setup
+PRojeto catalogo online para delivery.
+Link de visualização [Ver online](https://appeats.vercel.app/)
 
-To run this project, you will need to install the latest version of [Node.js](https://nodejs.org/en/download/) and [Expo CLI](https://docs.expo.dev/get-started/installation/).
 
-Once those are installed, you can clone this repository and install its dependencies:
+´´´´
+git clone https://github.com/CarlosHxH/Appeats.git
+yarn install
+yarn dev
 
-```bash
-git clone https://github.com/lumamontes/expo-router-auth.git
-cd expo-router-auth
-npm install
-```
-
-To start the project, run:
-```bash
-npx expo start
-```
+´´´´
