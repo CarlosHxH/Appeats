@@ -1,5 +1,7 @@
 Projeto catalogo online para delivery.
 
+ Projetado para aparelhos moveis.
+
 Link de visualização [Ver online](https://appeats.vercel.app/)
 
 #Execultar projeto:
